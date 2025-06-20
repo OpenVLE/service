@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "OpenVLE Service",
+  "version": "1.0.0",
+  "description": "A service worker for OpenVLE to allow API access to third-party VLEs.",
+  "permissions": ["scripting", "tabs"],
+  "icons": {
+    "16": "assets/images/openVLE.png",
+    "48": "assets/images/openVLE.png",
+    "128": "assets/images/openVLE.png"
+  },
+  "host_permissions": [
+    "*://*.bromcomvle.com/*",
+    "*://bromcomvle.com/*",
+    "*://*.zayaanar.xyz/*",
+    "*://zayaanar.xyz/*",
+    "*://*.zayaanar.me/*",
+    "*://zayaanar.me/*",
+    "http://localhost/*",
+    "https://localhost/*",
+    "http://localhost:*/",
+    "https://localhost:*/"
+  ],
+  "background": {
+    "service_worker": "assets/scripts/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_icon": {
+      "16": "assets/images/openVLE.png",
+      "48": "assets/images/openVLE.png",
+      "128": "assets/images/openVLE.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.bromcomvle.com/*",
+        "*://bromcomvle.com/*",
+        "*://*.zayaanar.xyz/*",
+        "*://zayaanar.xyz/*",
+        "*://*.zayaanar.me/*",
+        "*://zayaanar.me/*",
+        "http://localhost/*",
+        "https://localhost/*",
+        "http://localhost:*/",
+        "https://localhost:*/"
+      ],
+      "js": [
+        "assets/scripts/sendData.js"
+      ]
+    }
+  ]
+}
