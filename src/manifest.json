@@ -9,6 +9,10 @@
     "48": "assets/images/openVLE.png",
     "128": "assets/images/openVLE.png"
   },
+  "host_permissions": [
+    "*://*.bromcomvle.com/*",
+    "*://bromcomvle.com/*"
+  ],
   "background": {
     "service_worker": "assets/scripts/background.js",
     "type": "module"
