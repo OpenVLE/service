@@ -70,6 +70,7 @@ window.addEventListener("message", async (event) => {
                 ssoURL = doc.getElementById("btnLinkMicrosoftAccount").getAttribute("href");
             }
 
+            chrome.storage.local.set({ oauthRedirect: true });
             window.postMessage({ type: "obtainSSOLinkCallback", data: ssoURL }, portalOrigin);
         }
     }

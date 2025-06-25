@@ -3,7 +3,7 @@
   "name": "OpenVLE Service",
   "version": "1.0.1",
   "description": "An open-source, lightweight interface for school VLEs. Unofficial. Sleek. Student-first.",
-  "permissions": [],
+  "permissions": ["storage", "scripting"],
   "icons": {
     "16": "assets/images/openVLE.png",
     "48": "assets/images/openVLE.png",
@@ -28,10 +28,14 @@
   },
   "content_scripts": [
     {
+      "matches": ["*://bromcomvle.com/Home/Dashboard*"],
+      "js": ["assets/scripts/oauthRedirect.js"],
+      "run_at": "document_start"
+    },
+    {
       "matches": [
         "*://*.openvle.xyz/*",
-        "*://openvle.xyz/*",
-        "http://localhost:5500/*"
+        "*://openvle.xyz/*"
       ],
       "js": [
         "assets/scripts/portalConnector.js"
@@ -41,9 +45,8 @@
   "openVLEConfig": {
     "trusted_origins": [
       "https://openvle.xyz",
-      "https://portal.openvle.xyz",
-      "http://localhost:5500"
+      "https://portal.openvle.xyz"
     ],
-    "portal_origin": "http://localhost:5500"
+    "portal_origin": "https://portal.openvle.xyz"
   }
 }
