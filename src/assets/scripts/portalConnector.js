@@ -62,9 +62,11 @@ window.addEventListener("message", async (event) => {
             let ssoURL = "";
 
             if (provider === "google") {
-                ssoURL = doc.getElementById("btnLinkGoogleAccount").getAttribute("href");
+                const googleElement = doc.getElementById("btnLinkGoogleAccount");
+                ssoURL = googleElement ? googleElement.getAttribute("href") : "";
             } else if (provider === "microsoft") {
-                ssoURL = doc.getElementById("btnLinkMicrosoftAccount").getAttribute("href");
+                const microsoftElement = doc.getElementById("btnLinkMicrosoftAccount");
+                ssoURL = microsoftElement ? microsoftElement.getAttribute("href") : "";
             }
 
             chrome.storage.local.set({ oauthRedirect: true });
