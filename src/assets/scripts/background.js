@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             })
             .catch(error => {
                 console.error("Error contacting API:", error);
-                sendResponse({ error });
+                sendResponse({ error: error.toString() });
             });
 
         return true;
