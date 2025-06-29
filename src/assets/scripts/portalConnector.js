@@ -57,20 +57,30 @@ window.addEventListener("message", async (event) => {
         if (apiResponse) {
             const parser = new DOMParser();
             const provider = event.data.data.provider;
-            const decodedHTML = atob(apiResponse.body);
-            const doc = parser.parseFromString(decodedHTML, 'text/html');
-            let ssoURL = "";
+            let decodedHTML = "";
+            try {
+                if (apiResponse.body && typeof apiResponse.body === "string") {
+                    decodedHTML = atob(apiResponse.body);
+                } else {
+                    throw new Error("Invalid or missing apiResponse.body");
+                }
+                const doc = parser.parseFromString(decodedHTML, 'text/html');
+                let ssoURL = "";
 
-            if (provider === "google") {
-                const googleElement = doc.getElementById("btnLinkGoogleAccount");
-                ssoURL = googleElement ? googleElement.getAttribute("href") : "";
-            } else if (provider === "microsoft") {
-                const microsoftElement = doc.getElementById("btnLinkMicrosoftAccount");
-                ssoURL = microsoftElement ? microsoftElement.getAttribute("href") : "";
+                if (provider === "google") {
+                    const googleElement = doc.getElementById("btnLinkGoogleAccount");
+                    ssoURL = googleElement ? googleElement.getAttribute("href") : "";
+                } else if (provider === "microsoft") {
+                    const microsoftElement = doc.getElementById("btnLinkMicrosoftAccount");
+                    ssoURL = microsoftElement ? microsoftElement.getAttribute("href") : "";
+                }
+
+                chrome.storage.local.set({ oauthRedirect: true });
+                window.postMessage({ type: "obtainSSOLinkCallback", data: ssoURL }, event.origin);
+            } catch (error) {
+                console.error("Error decoding or parsing SSO URL:", error);
+                window.postMessage({ type: "obtainSSOLinkCallback", data: "" }, event.origin);
             }
-
-            chrome.storage.local.set({ oauthRedirect: true });
-            window.postMessage({ type: "obtainSSOLinkCallback", data: ssoURL }, event.origin);
         }
     }
 });
