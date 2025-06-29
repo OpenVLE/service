@@ -35,8 +35,7 @@
     {
       "matches": [
         "*://*.openvle.xyz/*",
-        "*://openvle.xyz/*",
-        "http://localhost:5500/*"
+        "*://openvle.xyz/*"
       ],
       "js": [
         "assets/scripts/portalConnector.js"
@@ -46,8 +45,7 @@
   "openVLEConfig": {
     "trusted_origins": [
       "https://openvle.xyz",
-      "https://portal.openvle.xyz",
-      "http://localhost:5500"
+      "https://portal.openvle.xyz"
     ]
   }
 }
