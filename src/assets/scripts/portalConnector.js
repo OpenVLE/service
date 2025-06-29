@@ -58,21 +58,24 @@ window.addEventListener("message", async (event) => {
             const parser = new DOMParser();
             const provider = event.data.data.provider;
             let decodedHTML = "";
+            let ssoURL = "";
+
             try {
                 if (apiResponse.body && typeof apiResponse.body === "string") {
                     decodedHTML = atob(apiResponse.body);
-                } else {
-                    throw new Error("Invalid or missing apiResponse.body");
-                }
-                const doc = parser.parseFromString(decodedHTML, 'text/html');
-                let ssoURL = "";
 
-                if (provider === "google") {
-                    const googleElement = doc.getElementById("btnLinkGoogleAccount");
-                    ssoURL = googleElement ? googleElement.getAttribute("href") : "";
-                } else if (provider === "microsoft") {
-                    const microsoftElement = doc.getElementById("btnLinkMicrosoftAccount");
-                    ssoURL = microsoftElement ? microsoftElement.getAttribute("href") : "";
+                    const bromcom = parser.parseFromString(decodedHTML, 'text/html');
+
+                    if (provider === "google") {
+                        const googleElement = bromcom.getElementById("btnLinkGoogleAccount");
+                        ssoURL = googleElement ? googleElement.getAttribute("href") : "";
+                    } else if (provider === "microsoft") {
+                        const microsoftElement = bromcom.getElementById("btnLinkMicrosoftAccount");
+                        ssoURL = microsoftElement ? microsoftElement.getAttribute("href") : "";
+                    }
+                } else {
+                    console.warn("fallback: must've been an internal error fetching BromcomVLE's SSO URLs, retrying login!");
+                    ssoURL = `${event.origin}/login`;
                 }
 
                 chrome.storage.local.set({ oauthRedirect: true });
